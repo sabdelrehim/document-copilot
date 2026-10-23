@@ -46,6 +46,7 @@ select = ["E", "F", "I", "UP"]
 [tool.pyright]
 venvPath = ".."
 venv = ".venv"
+extraPaths = ["."]
 include = ["app", "tests", "alembic"]
 pythonVersion = "3.12"
 typeCheckingMode = "basic"
