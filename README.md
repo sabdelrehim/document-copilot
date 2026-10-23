@@ -49,7 +49,25 @@ You also need accounts/keys for external services once the app is wired up. Star
 
 ## Running locally
 
-To be added during the build. Setup guides:
+**Backend** (from `backend/`, requires `.env`):
+
+```bash
+uv sync
+uv run uvicorn app.main:app --reload
+```
+
+Health check: `http://localhost:8000/health`
+
+**Frontend** (from `frontend/`, requires `.env`):
+
+```bash
+pnpm install
+pnpm dev
+```
+
+App shell: `http://localhost:5173`
+
+Setup guides:
 
 - [Supabase](docs/guides/supabase-setup.md) — account, hosted project (dashboard or CLI)
 - [Backend](docs/guides/backend-setup.md)

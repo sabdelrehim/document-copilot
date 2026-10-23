@@ -9,20 +9,22 @@ The product is a grounded chat over SEC filings. The risky parts are retrieval q
 - [x] Client brief, architecture, and setup guides
 - [x] Backend and frontend env templates
 - [x] `data/download.py` for the sample 10-K corpus
-- [ ] Supabase project created and credentials filled into local `.env` files
-- [ ] OpenAI API key in `backend/.env`
-- [ ] Sample filings downloaded (`uv run data/download.py` after setting `USER_AGENT`)
+- [x] Supabase project created and credentials filled into local `.env` files
+- [x] OpenAI API key in `backend/.env` (verified: API responds)
+- [x] Sample filings downloaded (25 × 10-K on disk; see note on `USER_AGENT` below)
 
 ## 0. Accounts and corpus on disk
 
 Nothing else can be verified without these.
 
-- [ ] Create the hosted Supabase project ([docs/guides/supabase-setup.md](docs/guides/supabase-setup.md))
-- [ ] Enable email auth only. For local dev, turn off email confirmation
-- [ ] Copy project URL, anon key, service-role key, and the **direct** database URL into `backend/.env`
-- [ ] Copy project URL and anon key into `frontend/.env`. Leave the service-role key and `DATABASE_URL` out of the frontend
-- [ ] Create an OpenAI key and set `OPENAI_API_KEY` in `backend/.env`
-- [ ] Set a real SEC `USER_AGENT` in `data/download.py` and download the sample 10-Ks (AAPL, MSFT, NVDA, AMZN, GOOGL)
+- [x] Create the hosted Supabase project ([docs/guides/supabase-setup.md](docs/guides/supabase-setup.md))
+- [ ] Enable email auth only. For local dev, turn off email confirmation *(confirm in Supabase dashboard — not verifiable from the repo)*
+- [x] Copy project URL, anon key, service-role key, and the **direct** database URL into `backend/.env`
+- [x] Copy project URL and anon key into `frontend/.env`. Leave the service-role key and `DATABASE_URL` out of the frontend
+- [x] Create an OpenAI key and set `OPENAI_API_KEY` in `backend/.env`
+- [ ] Set a real SEC `USER_AGENT` in `data/download.py` *(still `your.email@example.com` in source; corpus already downloaded)*
+
+**Step 0 audit (local):** Supabase Auth health OK; OpenAI key OK; backend/frontend Supabase URL + anon key match; `DATABASE_URL` uses direct `db.<ref>.supabase.co` (not pooler); 25 `.htm` files + `manifest.json` (5 tickers × 5 filings). Postgres login not re-tested here (Windows OpenSSL/psycopg quirk); first `alembic upgrade head` in phase 1 is the real DB proof.
 
 **Stop when:** both `.env` files have real values, and `data/downloads/` plus `manifest.json` exist locally.
 
@@ -30,15 +32,15 @@ Nothing else can be verified without these.
 
 Scaffold the backend first, then the frontend. You need a process that can own migrations before the UI is worth building. Keep both apps empty of product behavior in this phase.
 
-- [ ] From `backend/`, install the stack in [docs/guides/backend-setup.md](docs/guides/backend-setup.md): FastAPI, uvicorn, Pydantic, pydantic-settings, httpx, structlog, OpenAI, Supabase, PydanticAI, SQLAlchemy, Alembic, psycopg, pgvector; dev deps pytest and ruff
-- [ ] Make `backend/app` an installable package so `from app...` works under uvicorn and pytest
-- [ ] Add `app/config.py` as the only place that reads environment variables. Fail startup if a required value is missing
-- [ ] Add `app/main.py` with a health route and CORS from `ALLOWED_ORIGINS`
-- [ ] Initialize Alembic and point `alembic/env.py` at SQLAlchemy metadata and the direct `DATABASE_URL`
-- [ ] From `frontend/`, scaffold Vite React TypeScript ([docs/guides/frontend-setup.md](docs/guides/frontend-setup.md))
-- [ ] Add Tailwind, shadcn/ui, and React Router. Keep the `@/*` import alias
-- [ ] Add `src/lib/env.ts` that validates `VITE_API_BASE_URL`, `VITE_SUPABASE_URL`, and `VITE_SUPABASE_ANON_KEY` at boot
-- [ ] Confirm `pnpm tsc --noEmit` and `pnpm lint` pass, and `uv run uvicorn app.main:app --reload` serves the health route
+- [x] From `backend/`, install the stack in [docs/guides/backend-setup.md](docs/guides/backend-setup.md): FastAPI, uvicorn, Pydantic, pydantic-settings, httpx, structlog, OpenAI, Supabase, PydanticAI, SQLAlchemy, Alembic, psycopg, pgvector; dev deps pytest and ruff
+- [x] Make `backend/app` an installable package so `from app...` works under uvicorn and pytest
+- [x] Add `app/config.py` as the only place that reads environment variables. Fail startup if a required value is missing
+- [x] Add `app/main.py` with a health route and CORS from `ALLOWED_ORIGINS`
+- [x] Initialize Alembic and point `alembic/env.py` at SQLAlchemy metadata and the direct `DATABASE_URL`
+- [x] From `frontend/`, scaffold Vite React TypeScript ([docs/guides/frontend-setup.md](docs/guides/frontend-setup.md))
+- [x] Add Tailwind, shadcn/ui, and React Router. Keep the `@/*` import alias
+- [x] Add `src/lib/env.ts` that validates `VITE_API_BASE_URL`, `VITE_SUPABASE_URL`, and `VITE_SUPABASE_ANON_KEY` at boot
+- [x] Confirm `pnpm tsc --noEmit` and `pnpm lint` pass, and `uv run uvicorn app.main:app --reload` serves the health route
 
 **Stop when:** the API answers a health check on `http://localhost:8000` and the SPA renders a blank shell on `http://localhost:5173`.
 
