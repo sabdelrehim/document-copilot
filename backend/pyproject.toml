@@ -22,10 +22,6 @@ dependencies = [
     "uvicorn==0.54.0",
 ]
 
-[tool.uv]
-add-bounds = "exact"
-exclude-newer = "7 days"
-
 [dependency-groups]
 dev = [
     "pytest==9.1.1",
@@ -46,3 +42,10 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP"]
+
+[tool.pyright]
+venvPath = ".."
+venv = ".venv"
+include = ["app", "tests", "alembic"]
+pythonVersion = "3.12"
+typeCheckingMode = "basic"

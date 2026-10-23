@@ -1,8 +1,15 @@
 {
-  "venvPath": "backend",
+  "venvPath": ".",
   "venv": ".venv",
-  "extraPaths": ["backend"],
   "include": ["backend"],
+  "exclude": ["frontend", "data", "**/node_modules"],
   "pythonVersion": "3.12",
-  "typeCheckingMode": "basic"
+  "typeCheckingMode": "basic",
+  "executionEnvironments": [
+    {
+      "root": "backend",
+      "extraPaths": ["backend"],
+      "pythonVersion": "3.12"
+    }
+  ]
 }

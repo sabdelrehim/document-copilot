@@ -2,14 +2,23 @@
 
 This project uses a separate Python + FastAPI backend because the server is responsible for AI and document-processing work, not just basic web CRUD. Python gives us the strongest ecosystem for ingestion, chunking, embeddings, retrieval, evaluation, and LLM workflows. Keeping this logic behind a dedicated API also keeps the frontend focused on the user experience while the backend owns data access, orchestration, and grounding.
 
-## Init (from empty `backend/`)
+## Python environment (repo root)
+
+This repo uses a **single uv workspace venv** at the repository root (`.venv/`), not `backend/.venv`. From the repo root:
+
+```bash
+uv sync
+```
+
+Add backend dependencies from `backend/`:
 
 ```bash
 cd backend
-uv sync
 uv add fastapi uvicorn pydantic pydantic-settings httpx structlog openai supabase pydantic-ai sqlalchemy alembic "psycopg[binary]" pgvector
 uv add --dev pytest ruff
 ```
+
+(`uv add` updates the workspace lockfile at the repo root.)
 
 ## Database migrations
 
@@ -46,15 +55,17 @@ uv run alembic upgrade head
 ## Run
 
 ```bash
-cd backend
+# install / refresh deps (repo root)
 uv sync
+
+cd backend
 uv run alembic upgrade head
 uv run uvicorn app.main:app --reload
 ```
 
 ## Imports (`from app...`)
 
-`backend/app` is installed as an editable package by `uv sync`, so `from app...` imports work from uvicorn, direct Python execution, tests, and Jupyter kernels that use the backend venv.
+`backend/app` is installed as an editable package by `uv sync`, so `from app...` imports work from uvicorn, direct Python execution, tests, and Jupyter kernels that use the repo-root `.venv`.
 
 The `[build-system]` and `[tool.hatch.build.targets.wheel]` sections in `backend/pyproject.toml` tell uv how to install the local `app/` package. Without that package install, imports depend on the current working directory or a manually configured `PYTHONPATH`, which is fragile in notebooks and IDE run buttons.
 

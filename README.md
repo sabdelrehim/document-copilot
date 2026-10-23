@@ -27,6 +27,8 @@ Full brief: [docs/client-brief.md](docs/client-brief.md)
 document-copilot/
 ├── AGENTS.md           # agent instructions (read first)
 ├── README.md           # this file
+├── .venv/              # Python env (repo root only; gitignored)
+├── pyproject.toml      # uv workspace (backend member)
 ├── data/               # local corpus + download script (payloads gitignored)
 ├── docs/
 │   └── client-brief.md # the client one-pager
@@ -49,12 +51,18 @@ You also need accounts/keys for external services once the app is wired up. Star
 
 ## Running locally
 
-**Backend** (from `backend/`, requires `.env`):
+**Backend** (one shared `.venv` at the repo root; `backend/.env` required):
 
 ```bash
+# from repo root
 uv sync
+
+# from backend/ (uses root .venv via uv workspace)
+cd backend
 uv run uvicorn app.main:app --reload
 ```
+
+**Cursor / VS Code interpreter:** `.vscode/settings.json` points at `${workspaceFolder}/.venv/Scripts/python.exe` (on this machine: `D:\DAndF\document-copilot\.venv\Scripts\python.exe`). Use **Python: Select Interpreter** and pick that path if Pylance still shows unresolved imports.
 
 Health check: `http://localhost:8000/health`
 
