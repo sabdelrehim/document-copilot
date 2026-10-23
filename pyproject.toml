@@ -10,3 +10,5 @@ members = ["backend"]
 [tool.uv]
 add-bounds = "exact"
 exclude-newer = "7 days"
+# Windows / corporate proxies: trust the OS certificate store when talking to PyPI.
+system-certs = true

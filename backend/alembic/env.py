@@ -2,9 +2,10 @@ from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config, pool
 
+import app.database.models  # noqa: F401
 from alembic import context
 from app.config import settings
-from app.database.models import Base
+from app.database.base import Base
 
 config = context.config
 

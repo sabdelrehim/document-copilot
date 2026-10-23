@@ -48,10 +48,10 @@ Scaffold the backend first, then the frontend. You need a process that can own m
 
 Auth and tables are the shared contract. Put them in place before any chat or ingestion code.
 
-- [ ] Model `profiles`, `chat_threads`, `chat_messages`, `message_citations`, `source_documents`, and `document_chunks` in `app/database/models.py`
-- [ ] Generate and review the first Alembic migration. Add by hand what autogenerate will miss: `vector` extension, `vector(1536)` embeddings, generated `tsvector`, HNSW and GIN indexes, RLS enablement and policies
-- [ ] Apply it with `uv run alembic upgrade head` against the direct connection, not the pooler URL
-- [ ] On signup, create a `profiles` row keyed by `auth.users.id`
+- [x] Model `users`, `chat_threads`, `chat_messages`, `message_citations`, `source_documents`, and `document_chunks` in `app/database/models.py`
+- [x] Generate and review the first Alembic migration. Add by hand what autogenerate will miss: `vector` extension, `vector(1536)` embeddings, generated `tsvector`, HNSW and GIN indexes, RLS enablement and policies (`alembic/versions/8b3166d00f01_initial_schema.py`)
+- [ ] Apply it with `uv run alembic upgrade head` against the direct connection, not the pooler URL *(prepared — not run yet)*
+- [ ] On signup, create a `users` row keyed by `auth.users.id`
 - [ ] Backend: `app/auth/dependencies.py` verifies `Authorization: Bearer <supabase access token>` by calling Supabase Auth, and exposes `get_current_user`. Reject missing or invalid tokens with 401 before any other work
 - [ ] Frontend: `src/lib/supabase.ts` browser client, email sign-in and sign-out pages, and a route guard. No Google and no SSO
 - [ ] Frontend: `src/lib/http.ts` and `src/lib/api.ts`. The client adds the bearer token, applies `VITE_API_BASE_URL`, times out, and turns failures into typed `ApiError`s, including a flag that separates network or CORS failures from HTTP errors
