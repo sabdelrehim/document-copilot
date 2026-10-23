@@ -65,7 +65,7 @@ pnpm install
 pnpm dev
 ```
 
-App shell: `http://localhost:5173`
+App shell: `http://127.0.0.1:5173` (Vite is pinned to port 5173; if the port is busy, stop the other process and run `pnpm dev` again)
 
 Setup guides:
 
