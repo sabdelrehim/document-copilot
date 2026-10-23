@@ -50,7 +50,7 @@ Auth and tables are the shared contract. Put them in place before any chat or in
 
 - [x] Model `users`, `chat_threads`, `chat_messages`, `message_citations`, `source_documents`, and `document_chunks` in `app/database/models.py`
 - [x] Generate and review the first Alembic migration. Add by hand what autogenerate will miss: `vector` extension, `vector(1536)` embeddings, generated `tsvector`, HNSW and GIN indexes, RLS enablement and policies (`alembic/versions/8b3166d00f01_initial_schema.py`)
-- [ ] Apply it with `uv run alembic upgrade head` against the direct connection, not the pooler URL *(prepared — not run yet)*
+- [x] Apply it with `uv run alembic upgrade head` against the direct connection, not the pooler URL
 - [ ] On signup, create a `users` row keyed by `auth.users.id`
 - [ ] Backend: `app/auth/dependencies.py` verifies `Authorization: Bearer <supabase access token>` by calling Supabase Auth, and exposes `get_current_user`. Reject missing or invalid tokens with 401 before any other work
 - [ ] Frontend: `src/lib/supabase.ts` browser client, email sign-in and sign-out pages, and a route guard. No Google and no SSO
